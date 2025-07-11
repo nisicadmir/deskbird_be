@@ -1,0 +1,38 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: deskbird-db
+    restart: always
+    environment:
+      POSTGRES_DB: deskbird-db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_MULTIPLE_USERS: app_user
+      POSTGRES_MULTIPLE_PASSWORDS: postgres
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data_deskbird:/var/lib/postgresql/data
+    networks:
+      - deskbird-network
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: deskbird-pgadmin
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - '5050:80'
+    depends_on:
+      - postgres
+    networks:
+      - deskbird-network
+
+networks:
+  deskbird-network:
+    driver: bridge
+
+volumes:
+  postgres_data_deskbird:
