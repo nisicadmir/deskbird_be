@@ -1,5 +1,12 @@
 # Task Deskbird
 
+Deployed on render.com
+First time when you do the login it can last for up to 1 minute.
+Site can be accessed on link: https://deskbird-fe.onrender.com
+
+email: admir.nisic@outlook.com
+password: 123456
+
 ## Features
 
 - User authentication and authorization using JWT.

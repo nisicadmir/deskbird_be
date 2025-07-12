@@ -5,7 +5,7 @@ import { UserRole } from '../common/models/user.model';
 import { hashPassword } from '../common/lib/hash.lib';
 import { config } from '../config/config';
 
-const EMAIL = 'admir.nisic2@outlook.com';
+const EMAIL = 'admir.nisic@outlook.com';
 const PASSWORD = '123456';
 const ROLE = UserRole.ADMIN;
 const FULL_NAME = 'Admir Nisic';
