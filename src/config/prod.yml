@@ -9,6 +9,5 @@ database:
   logging: false
 
 jwt:
-  secret: zmaj_pljuje_vatru
-  accessTokenExpiresIn: 43200
-  refreshTokenExpiresIn: 604800
+  secret: ${JWT_SECRET}
+  accessTokenExpiresIn: 3600 # 1 hour

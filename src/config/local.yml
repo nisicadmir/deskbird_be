@@ -10,4 +10,4 @@ database:
 
 jwt:
   secret: banana
-  accessTokenExpiresIn: 900
+  accessTokenExpiresIn: 900 # 15 minutes
