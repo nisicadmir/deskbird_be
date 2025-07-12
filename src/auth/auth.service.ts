@@ -5,7 +5,7 @@ import { Repository } from 'typeorm';
 import { comparePassword } from '../common/lib/hash.lib';
 import { User } from '../database/entities/user.entity';
 import { signJwt } from '../common/lib/jwt.lib';
-import { IJwtPayload } from '../common/models/user.model';
+import { IUserJwtPayload, UserResponseModel } from '../common/models/user.model';
 
 @Injectable()
 export class AuthService {
@@ -21,9 +21,20 @@ export class AuthService {
       throw new UnauthorizedException('Invalid credentials');
     }
 
-    const jwtPayload: IJwtPayload = { id: user.id, email: user.email, role: user.role };
+    const jwtPayload: IUserJwtPayload = { id: user.id, email: user.email, role: user.role };
     const accessToken = signJwt(jwtPayload);
 
     return accessToken;
+  }
+
+  async me(userId: number): Promise<UserResponseModel> {
+    const user: UserResponseModel | null = await this.userRepository.findOne({
+      where: { id: userId },
+      select: ['id', 'email', 'fullName', 'role', 'createdAt', 'updatedAt'],
+    });
+    if (!user) {
+      throw new UnauthorizedException('Invalid credentials');
+    }
+    return user;
   }
 }

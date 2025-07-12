@@ -15,7 +15,7 @@ export interface IUser {
   updatedAt: Date;
 }
 
-export type IJwtPayload = Pick<IUser, 'id' | 'email' | 'role'>;
+export type IUserJwtPayload = Pick<IUser, 'id' | 'email' | 'role'>;
 
 /**
  * Model for manipulating user in database
