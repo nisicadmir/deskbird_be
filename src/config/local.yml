@@ -1,0 +1,13 @@
+ENV: local
+url: http://localhost:3000
+frontendUrl: http://localhost:4200
+port: 3000
+
+database:
+  url: postgres://postgres:postgres@localhost:5432/deskbird-db
+  synchronize: false
+  logging: true
+
+jwt:
+  secret: banana
+  accessTokenExpiresIn: 900

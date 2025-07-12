@@ -1,0 +1,14 @@
+ENV: prod
+url: https://www.nisix.net
+frontendUrl: https://www.nisix.net
+port: 3000
+
+database:
+  url: ${DATABASE_URL}
+  synchronize: false
+  logging: false
+
+jwt:
+  secret: zmaj_pljuje_vatru
+  accessTokenExpiresIn: 43200
+  refreshTokenExpiresIn: 604800

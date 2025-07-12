@@ -7,21 +7,13 @@ import { User } from './database/entities/user.entity';
 import { DataSource } from 'typeorm';
 import { UserModule } from './user/user.module';
 
-const DB_USERNAME = process.env.DB_USERNAME;
-const DB_PASSWORD = process.env.DB_PASSWORD;
-const DB_DATABASE = process.env.DB_DATABASE;
-const DB_HOST = process.env.DB_HOST;
-const DB_PORT = parseInt(process.env.DB_PORT ?? '5432', 10);
+import { config } from './config/config';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: DB_HOST,
-      port: DB_PORT,
-      username: DB_USERNAME,
-      password: DB_PASSWORD,
-      database: DB_DATABASE,
+      url: config.database.url,
       entities: [User],
       synchronize: true,
     }),

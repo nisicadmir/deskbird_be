@@ -3,19 +3,16 @@ import { DataSource } from 'typeorm';
 import { User } from './entities/user.entity';
 import { UserRole } from '../common/models/user.model';
 import { hashPassword } from '../common/lib/hash.lib';
+import { config } from '../config/config';
 
-const EMAIL = 'admir.nisic@outlook.com';
+const EMAIL = 'admir.nisic2@outlook.com';
 const PASSWORD = '123456';
 const ROLE = UserRole.ADMIN;
 const FULL_NAME = 'Admir Nisic';
 
 const AppDataSource = new DataSource({
   type: 'postgres',
-  host: process.env.DB_HOST,
-  port: Number(process.env.DB_PORT),
-  username: process.env.DB_USERNAME,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_DATABASE,
+  url: config.database.url,
   entities: [User],
   synchronize: true,
 });
