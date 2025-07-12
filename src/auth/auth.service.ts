@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { comparePassword } from '../common/lib/hash.lib';
 import { User } from '../database/entities/user.entity';
 import { signJwt } from 'src/common/lib/jwt.lib';
+import { IJwtPayload } from 'src/common/models/user.model';
 
 @Injectable()
 export class AuthService {
@@ -20,7 +21,8 @@ export class AuthService {
       throw new UnauthorizedException('Invalid credentials');
     }
 
-    const accessToken = signJwt({ id: user.id, email: user.email, role: user.role });
+    const jwtPayload: IJwtPayload = { id: user.id, email: user.email, role: user.role };
+    const accessToken = signJwt(jwtPayload);
 
     return accessToken;
   }
