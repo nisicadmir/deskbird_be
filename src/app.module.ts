@@ -5,6 +5,7 @@ import { AuthModule } from './auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './database/entities/user.entity';
 import { DataSource } from 'typeorm';
+import { UserModule } from './user/user.module';
 
 const DB_USERNAME = process.env.DB_USERNAME;
 const DB_PASSWORD = process.env.DB_PASSWORD;
@@ -25,6 +26,7 @@ const DB_PORT = parseInt(process.env.DB_PORT ?? '5432', 10);
       synchronize: true,
     }),
     AuthModule,
+    UserModule,
   ],
   controllers: [],
   providers: [],

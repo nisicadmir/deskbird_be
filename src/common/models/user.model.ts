@@ -13,3 +13,22 @@ export interface IUser {
 }
 
 export type IJwtPayload = Pick<IUser, 'id' | 'email' | 'role'>;
+
+import { IsEmail, IsString, MinLength, IsEnum, MaxLength, IsNotEmpty } from 'class-validator';
+
+export class UserCreateDto {
+  @IsEmail()
+  @IsNotEmpty()
+  @MaxLength(100)
+  email: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @MinLength(6)
+  @MaxLength(100)
+  password: string;
+
+  @IsEnum(UserRole)
+  @IsNotEmpty()
+  role: UserRole;
+}
