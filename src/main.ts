@@ -1,11 +1,10 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 
-import { config } from './config/config';
-
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  await app.listen(config.port);
+  app.enableCors(); // Enable CORS with default settings
+  await app.listen(3000);
 }
 // eslint-disable-next-line @typescript-eslint/no-floating-promises
 bootstrap();
