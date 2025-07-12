@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 import { ConflictException, BadRequestException, InternalServerErrorException } from '@nestjs/common';
 
 import { User } from '../database/entities/user.entity';
-import { UserCreateDto, UserCreateModel, UserResponseModel, UserUpdateDto } from '../common/models/user.model';
+import { UserCreateDto, UserCreateModel, UserResponseModel, UserUpdateDto, UserUpdateModel } from '../common/models/user.model';
 import { hashPassword } from '../common/lib/hash.lib';
 
 @Injectable()
@@ -51,7 +51,11 @@ export class UserService {
     if (!user) {
       throw new NotFoundException('User not found');
     }
-    await this.userRepository.update(id, userUpdateDto);
+    const updateModel: UserUpdateModel = {
+      fullName: userUpdateDto.fullName,
+      role: userUpdateDto.role,
+    };
+    await this.userRepository.update(id, updateModel);
   }
 
   async findAll(): Promise<UserResponseModel[]> {

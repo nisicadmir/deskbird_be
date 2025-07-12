@@ -40,12 +40,6 @@ export class UserController {
     };
   }
 
-  @Get('list')
-  async list(): Promise<{ status: string; data: UserResponseModel[] }> {
-    const users = await this.userService.findAll();
-    return { status: 'ok', data: users };
-  }
-
   @Put(':id')
   @UsePipes(new ValidationPipe())
   @UseGuards(new RoleGuard([UserRole.ADMIN]))
@@ -64,5 +58,11 @@ export class UserController {
     }
     await this.userService.deleteUser(parsedId);
     return { status: 'ok' };
+  }
+
+  @Get('list')
+  async list(): Promise<{ status: string; data: UserResponseModel[] }> {
+    const users = await this.userService.findAll();
+    return { status: 'ok', data: users };
   }
 }

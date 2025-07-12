@@ -18,9 +18,10 @@ export interface IUser {
 export type IJwtPayload = Pick<IUser, 'id' | 'email' | 'role'>;
 
 /**
- * Model for creating user in database
+ * Model for manipulating user in database
  */
 export type UserCreateModel = Pick<IUser, 'email' | 'password' | 'role' | 'fullName'>;
+export type UserUpdateModel = Pick<IUser, 'fullName' | 'role'>;
 
 /**
  * DTO for creating a new user
