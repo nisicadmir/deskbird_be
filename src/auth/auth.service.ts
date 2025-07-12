@@ -4,8 +4,8 @@ import { Repository } from 'typeorm';
 
 import { comparePassword } from '../common/lib/hash.lib';
 import { User } from '../database/entities/user.entity';
-import { signJwt } from 'src/common/lib/jwt.lib';
-import { IJwtPayload } from 'src/common/models/user.model';
+import { signJwt } from '../common/lib/jwt.lib';
+import { IJwtPayload } from '../common/models/user.model';
 
 @Injectable()
 export class AuthService {

@@ -1,7 +1,9 @@
-import { Body, Controller, Post, Req, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Post, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
+
+import { AuthGuard } from '../common/guards/auth.guard';
+import { RoleGuard } from '../common/guards/role.guard';
+import { UserCreateDto, UserRole, UserResponseModel } from '../common/models/user.model';
 import { UserService } from './user.service';
-import { UserCreateDto } from 'src/common/models/user.model';
-import { AuthGuard } from 'src/common/guards/auth.guard';
 
 @Controller('user')
 @UseGuards(AuthGuard)
@@ -10,8 +12,15 @@ export class UserController {
 
   @Post('create')
   @UsePipes(new ValidationPipe())
-  create(@Body() userCreateDto: UserCreateDto, @Req() request: Request): string {
-    const user = (request as any).user;
-    return 'success: ' + userCreateDto.email + ' ' + user.email;
+  @UseGuards(new RoleGuard([UserRole.ADMIN]))
+  async create(@Body() userCreateDto: UserCreateDto): Promise<UserResponseModel> {
+    const userCreated = await this.userService.createUser(userCreateDto);
+    return {
+      id: userCreated.id,
+      email: userCreated.email,
+      role: userCreated.role,
+      createdAt: userCreated.createdAt,
+      updatedAt: userCreated.updatedAt,
+    } as UserResponseModel;
   }
 }

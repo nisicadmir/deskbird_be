@@ -4,8 +4,9 @@ import { User } from './entities/user.entity';
 import { UserRole } from '../common/models/user.model';
 import { hashPassword } from '../common/lib/hash.lib';
 
-const EMAIL = 'ni.admir@gmail.com';
+const EMAIL = 'admir.nisic@outlook.com';
 const PASSWORD = '123456';
+const ROLE = UserRole.ADMIN;
 
 const AppDataSource = new DataSource({
   type: 'postgres',
@@ -34,7 +35,7 @@ async function seed() {
   const user = userRepository.create({
     email: EMAIL,
     password: hashedPassword,
-    role: UserRole.USER,
+    role: ROLE,
   });
   await userRepository.save(user);
   console.log('Seeded user:', EMAIL);

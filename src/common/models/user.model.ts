@@ -1,3 +1,5 @@
+import { IsEmail, IsString, MinLength, IsEnum, MaxLength, IsNotEmpty } from 'class-validator';
+
 export enum UserRole {
   ADMIN = 'admin',
   USER = 'user',
@@ -14,8 +16,14 @@ export interface IUser {
 
 export type IJwtPayload = Pick<IUser, 'id' | 'email' | 'role'>;
 
-import { IsEmail, IsString, MinLength, IsEnum, MaxLength, IsNotEmpty } from 'class-validator';
+/**
+ * Model for creating user in database
+ */
+export type UserCreateModel = Pick<IUser, 'email' | 'password' | 'role'>;
 
+/**
+ * DTO for creating a new user
+ */
 export class UserCreateDto {
   @IsEmail()
   @IsNotEmpty()
@@ -32,3 +40,6 @@ export class UserCreateDto {
   @IsNotEmpty()
   role: UserRole;
 }
+
+export type UserResponseModel = Pick<IUser, 'id' | 'email' | 'role' | 'createdAt' | 'updatedAt'>;
+export type UserListResponseModel = UserResponseModel[];
