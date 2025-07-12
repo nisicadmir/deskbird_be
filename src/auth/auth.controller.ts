@@ -8,7 +8,8 @@ export class AuthController {
 
   @Post('sign-in')
   @UsePipes(new ValidationPipe())
-  async signIn(@Body() signInDto: SignInDto): Promise<string> {
-    return await this.authService.signIn(signInDto.email, signInDto.password);
+  async signIn(@Body() signInDto: SignInDto): Promise<{ accessToken: string }> {
+    const accessToken = await this.authService.signIn(signInDto.email, signInDto.password);
+    return { accessToken };
   }
 }

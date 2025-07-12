@@ -11,3 +11,5 @@ export interface IUser {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export type IJwtPayload = Pick<IUser, 'id' | 'email' | 'role'>;
