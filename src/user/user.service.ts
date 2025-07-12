@@ -61,6 +61,9 @@ export class UserService {
   async findAll(): Promise<UserResponseModel[]> {
     return this.userRepository.find({
       select: ['id', 'email', 'fullName', 'role', 'createdAt', 'updatedAt'],
+      order: {
+        createdAt: 'ASC',
+      },
     });
   }
 

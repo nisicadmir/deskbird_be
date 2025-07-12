@@ -33,6 +33,7 @@ export class UserController {
       data: {
         id: userCreated.id,
         email: userCreated.email,
+        fullName: userCreated.fullName,
         role: userCreated.role,
         createdAt: userCreated.createdAt,
         updatedAt: userCreated.updatedAt,
