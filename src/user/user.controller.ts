@@ -10,11 +10,12 @@ import {
   Param,
   BadRequestException,
   Req,
+  Put,
 } from '@nestjs/common';
 
 import { AuthGuard } from '../common/guards/auth.guard';
 import { RoleGuard } from '../common/guards/role.guard';
-import { UserCreateDto, UserRole, UserResponseModel } from '../common/models/user.model';
+import { UserCreateDto, UserRole, UserResponseModel, UserUpdateDto } from '../common/models/user.model';
 import { UserService } from './user.service';
 
 @Controller('user')
@@ -22,7 +23,7 @@ import { UserService } from './user.service';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Post('create')
+  @Post('')
   @UsePipes(new ValidationPipe())
   @UseGuards(new RoleGuard([UserRole.ADMIN]))
   async create(@Body() userCreateDto: UserCreateDto): Promise<{ status: string; data: UserResponseModel }> {
@@ -43,6 +44,14 @@ export class UserController {
   async list(): Promise<{ status: string; data: UserResponseModel[] }> {
     const users = await this.userService.findAll();
     return { status: 'ok', data: users };
+  }
+
+  @Put(':id')
+  @UsePipes(new ValidationPipe())
+  @UseGuards(new RoleGuard([UserRole.ADMIN]))
+  async update(@Param('id') id: string, @Body() userUpdateDto: UserUpdateDto): Promise<{ status: string }> {
+    await this.userService.updateUser(Number(id), userUpdateDto);
+    return { status: 'ok' };
   }
 
   @Delete(':id')

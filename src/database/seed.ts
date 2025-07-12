@@ -7,6 +7,7 @@ import { hashPassword } from '../common/lib/hash.lib';
 const EMAIL = 'admir.nisic@outlook.com';
 const PASSWORD = '123456';
 const ROLE = UserRole.ADMIN;
+const FULL_NAME = 'Admir Nisic';
 
 const AppDataSource = new DataSource({
   type: 'postgres',
@@ -36,6 +37,7 @@ async function seed() {
     email: EMAIL,
     password: hashedPassword,
     role: ROLE,
+    fullName: FULL_NAME,
   });
   await userRepository.save(user);
   console.log('Seeded user:', EMAIL);

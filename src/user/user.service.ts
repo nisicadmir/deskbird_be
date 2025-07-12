@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 import { ConflictException, BadRequestException, InternalServerErrorException } from '@nestjs/common';
 
 import { User } from '../database/entities/user.entity';
-import { UserCreateDto, UserCreateModel, UserResponseModel } from '../common/models/user.model';
+import { UserCreateDto, UserCreateModel, UserResponseModel, UserUpdateDto } from '../common/models/user.model';
 import { hashPassword } from '../common/lib/hash.lib';
 
 @Injectable()
@@ -29,6 +29,7 @@ export class UserService {
         email: userCreateDto.email,
         password: await hashPassword(userCreateDto.password),
         role: userCreateDto.role || 'user', // Default to 'user' if role is not provided
+        fullName: userCreateDto.fullName,
       };
 
       // Save the user to the database
@@ -45,9 +46,17 @@ export class UserService {
     }
   }
 
+  async updateUser(id: number, userUpdateDto: UserUpdateDto): Promise<void> {
+    const user = await this.userRepository.findOne({ where: { id } });
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    await this.userRepository.update(id, userUpdateDto);
+  }
+
   async findAll(): Promise<UserResponseModel[]> {
     return this.userRepository.find({
-      select: ['id', 'email', 'role', 'createdAt', 'updatedAt'],
+      select: ['id', 'email', 'fullName', 'role', 'createdAt', 'updatedAt'],
     });
   }
 
