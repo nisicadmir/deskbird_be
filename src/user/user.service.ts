@@ -1,10 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ConflictException, BadRequestException, InternalServerErrorException } from '@nestjs/common';
 
 import { User } from '../database/entities/user.entity';
-import { UserCreateDto, UserCreateModel } from '../common/models/user.model';
+import { UserCreateDto, UserCreateModel, UserResponseModel } from '../common/models/user.model';
 import { hashPassword } from '../common/lib/hash.lib';
 
 @Injectable()
@@ -43,5 +43,19 @@ export class UserService {
       console.error('Error creating user:', error);
       throw new InternalServerErrorException('Failed to create user due to an unexpected error');
     }
+  }
+
+  async findAll(): Promise<UserResponseModel[]> {
+    return this.userRepository.find({
+      select: ['id', 'email', 'role', 'createdAt', 'updatedAt'],
+    });
+  }
+
+  async deleteUser(id: number): Promise<void> {
+    const user = await this.userRepository.findOne({ where: { id } });
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    await this.userRepository.delete({ id });
   }
 }

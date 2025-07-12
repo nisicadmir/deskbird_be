@@ -1,4 +1,16 @@
-import { Body, Controller, Post, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Post,
+  Get,
+  UseGuards,
+  UsePipes,
+  ValidationPipe,
+  Delete,
+  Param,
+  BadRequestException,
+  Req,
+} from '@nestjs/common';
 
 import { AuthGuard } from '../common/guards/auth.guard';
 import { RoleGuard } from '../common/guards/role.guard';
@@ -13,14 +25,35 @@ export class UserController {
   @Post('create')
   @UsePipes(new ValidationPipe())
   @UseGuards(new RoleGuard([UserRole.ADMIN]))
-  async create(@Body() userCreateDto: UserCreateDto): Promise<UserResponseModel> {
+  async create(@Body() userCreateDto: UserCreateDto): Promise<{ status: string; data: UserResponseModel }> {
     const userCreated = await this.userService.createUser(userCreateDto);
     return {
-      id: userCreated.id,
-      email: userCreated.email,
-      role: userCreated.role,
-      createdAt: userCreated.createdAt,
-      updatedAt: userCreated.updatedAt,
-    } as UserResponseModel;
+      status: 'ok',
+      data: {
+        id: userCreated.id,
+        email: userCreated.email,
+        role: userCreated.role,
+        createdAt: userCreated.createdAt,
+        updatedAt: userCreated.updatedAt,
+      } as UserResponseModel,
+    };
+  }
+
+  @Get('list')
+  async list(): Promise<{ status: string; data: UserResponseModel[] }> {
+    const users = await this.userService.findAll();
+    return { status: 'ok', data: users };
+  }
+
+  @Delete(':id')
+  @UseGuards(new RoleGuard([UserRole.ADMIN]))
+  async delete(@Param('id') id: string, @Req() req): Promise<{ status: string }> {
+    const authUserId = req.user.id;
+    const parsedId = Number(id);
+    if (authUserId === parsedId) {
+      throw new BadRequestException('You cannot delete yourself.');
+    }
+    await this.userService.deleteUser(parsedId);
+    return { status: 'ok' };
   }
 }
